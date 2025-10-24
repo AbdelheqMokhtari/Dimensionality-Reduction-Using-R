@@ -1,0 +1,7 @@
+"0","# Apply PCA"
+"0","res.pca <- PCA("
+"0","  X = decathlon_vars,        # main variables"
+"0","  quanti.sup = 1:ncol(decathlon_supp), # indices of supplementary quantitative variables"
+"0","  scale.unit = TRUE,         # standardize variables"
+"0","  graph = TRUE               # show basic graphs"
+"0",")"

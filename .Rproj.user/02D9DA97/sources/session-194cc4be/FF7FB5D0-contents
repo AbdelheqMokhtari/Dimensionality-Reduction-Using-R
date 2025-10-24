@@ -92,7 +92,7 @@ All the remaining **10 variables** are **quantitative** and represented as **num
   - Min: **247.42 s**, Max: **325.72 s**, Median: **280.00 s**  
   - Demonstrates significant variability, as endurance differs widely among athletes.
 
-### 🧠 Interpretation
+### Interpretation
 
 Overall, all variables are **quantitative** and reflect different aspects of athletic performance:  
 - **Running times** (100m, 400m, 110m.hurdle, 1500m) measure **speed and endurance** — lower values indicate better results.  
@@ -142,7 +142,7 @@ fviz_pca_biplot(
   col.ind = "#696969"
 )
 ```
-## 🧠 Analysis of PCA Results
+## Analysis of PCA Results
 
 ### 1. Strongly correlated variables
 - The variables **100m, 400m, 110m.hurdle, and 1500m** (running events) are **positively correlated** with each other, as they all measure **speed and endurance**.  
@@ -167,4 +167,35 @@ fviz_pca_biplot(
 - **Group 3: Throwing events** → Shot.put, Discus, Javeline → strength and throwing technique  
 
 These groups reflect the **different physical skills required** for the decathlon, and the PCA allows us to visualize how these skills combine to characterize the athletes.
+
+
+# TP03 : PCA Variables
+
+# 1. individuals plot 
+
+```{r}
+# Plot individuals on the first two dimensions
+fviz_pca_ind(
+  res.PCA, 
+  col.ind = "cos2",            # color by quality of representation
+  gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+  repel = TRUE,                # avoid overlapping labels
+  axes = c(1, 2),              # first two dimensions
+  title = "PCA of Decathlon Athletes (Individuals Plot)"
+)
+```
+
+#  2.Observation of Athlete Distribution (Individuals Plot)
+
+- The distribution of athletes in the PCA space (first two dimensions) is **not completely homogeneous**.  
+- The cloud of points shows a **structure**, indicating that athletes differ in their profiles across the 10 events.  
+- We can observe **distinct groups**:  
+  - Some athletes are **strong in running events**,  
+  - Others excel in **jumping or throwing events**,  
+  - Some are **well-rounded**, performing consistently across all events.  
+- There are also a few **outliers** who perform exceptionally well in certain events compared to the rest of the athletes.  
+
+Overall, the PCA highlights both **clusters of athletes with similar performance profiles** and **extreme performers** who stand out in specific skills.
+
+
 
