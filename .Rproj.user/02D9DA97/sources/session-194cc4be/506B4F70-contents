@@ -1,0 +1,15 @@
+---
+title: "TP1"
+author: "Abdelheq Mokhtari"
+date: "2025-10-24"
+output: html_document
+---
+# TP04 : PCA Variables
+
+# Load Libraries 
+
+```{r}
+library(FactoMineR)
+library(Factoshiny)
+```
+

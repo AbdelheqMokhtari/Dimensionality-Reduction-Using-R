@@ -1,0 +1,221 @@
+---
+title: "TP2"
+author: "Abdelheq Mokhtari"
+date: "2025-10-24"
+output: html_document
+---
+
+# TP02 : PCA Variables
+
+# Load Libraries 
+
+```{r}
+library(FactoMineR)
+library(factoextra)
+```
+
+
+# Load Decathlon Data
+
+```{r}
+data(decathlon)
+```
+
+
+# 1. Preparation and exploration 
+
+
+```{r}
+# checking the header and the names of the different features in the dataset
+names(decathlon)
+head(decathlon)
+```
+We start by analyzing the Decathlon dataset, which contains the performances of several athletes across 13 different features: "100m", "Long.jump", "Shot.put", "High.jump", "400m", "110m.hurdle", "Discus", "Pole.vault", "Javeline", "1500m", "Rank", "Points", and "Competition". The first ten features correspond to the ten athletic events of the decathlon, while the last three Rank, Points, and Competition, provide additional information about each athlete’s ranking, total score, and competition type. Since the objective of our PCA (Principal Component Analysis) is to explore the relationships between the different athletic events and identify the main dimensions that explain overall performance, we will keep only the ten quantitative variables corresponding to the events and remove the non-relevant variables (Rank, Points, and Competition). 
+
+```{r}
+# Removing the features using their names 
+decathlon_vars <- decathlon[, !(names(decathlon) %in% c("Rank", "Competition", "Points"))]
+# Or remove them using the last three features of the Dataframe of decathlon
+# decathlon_vars <- decathlon[, 1:10]
+
+# keep the other 3 variables as supplementary variables
+decathlon_supp = decathlon[,11:13]
+```
+
+## examination the structure and the resume of the data-set
+
+```{r}
+str(decathlon_vars)
+```
+```{r}
+summary(decathlon_vars)
+```
+All the remaining **10 variables** are **quantitative** and represented as **numerical values** in R. Each one measures the performance of an athlete in a specific decathlon event.
+
+- **100m** → time (in seconds) to run 100 meters.  
+  - Min: **10.44 s**, Max: **11.64 s**, Median: **10.98 s**  
+  - The fastest athlete completed the 100m in 10.44 seconds, showing small variability among sprinters.
+
+- **Long.jump** → distance jumped (in meters).  
+  - Min: **6.20 m**, Max: **7.90 m**, Median: **7.40 m**  
+  - Most athletes achieved jumps above 7 meters, indicating good performance consistency.
+
+- **Shot.put** → distance thrown (in meters).  
+  - Min: **12.75 m**, Max: **16.36 m**, Median: **14.40 m**  
+  - This shows variability in athletes’ upper-body strength and throwing technique.
+
+- **High.jump** → height cleared (in meters).  
+  - Min: **1.86 m**, Max: **2.10 m**, Median: **1.98 m**  
+  - Most athletes perform close to 2 meters, reflecting a high level of jumping ability.
+
+- **400m** → time (in seconds) to run 400 meters.  
+  - Min: **46.81 s**, Max: **51.10 s**, Median: **48.90 s**  
+  - Shorter times indicate better endurance and sprinting ability over longer distances.
+
+- **110m.hurdle** → time (in seconds) to run 110m hurdles.  
+  - Min: **13.75 s**, Max: **15.19 s**, Median: **14.50 s**  
+  - Lower times represent greater agility and speed in hurdle events.
+
+- **Discus** → distance thrown (in meters).  
+  - Min: **37.92 m**, Max: **51.65 m**, Median: **45.00 m**  
+  - Reflects moderate variation in throwing power and technique.
+
+- **Pole.vault** → height achieved (in meters).  
+  - Min: **4.60 m**, Max: **5.32 m**, Median: **5.00 m**  
+  - Indicates strong technical and physical ability among competitors.
+
+- **Javeline** → distance thrown (in meters).  
+  - Min: **52.33 m**, Max: **72.32 m**, Median: **61.00 m**  
+  - Shows a wide range of results, with top athletes exceeding 70 meters.
+
+- **1500m** → time (in seconds) to run 1500 meters.  
+  - Min: **247.42 s**, Max: **325.72 s**, Median: **280.00 s**  
+  - Demonstrates significant variability, as endurance differs widely among athletes.
+
+### Interpretation
+
+Overall, all variables are **quantitative** and reflect different aspects of athletic performance:  
+- **Running times** (100m, 400m, 110m.hurdle, 1500m) measure **speed and endurance** — lower values indicate better results.  
+- **Jumping and throwing events** (Long.jump, High.jump, Pole.vault, Shot.put, Discus, Javeline) measure **power and technique** — higher values indicate better performance.  
+These differences show that athletes specialize in various strengths, which the PCA will help to summarize and visualize.
+
+
+# 2. PCA
+
+```{r}
+# Apply PCA
+res.PCA<-PCA(decathlon,quali.sup=c(13),quanti.sup=c(11,12),graph=FALSE)
+plot.PCA(res.PCA,choix='var')
+plot.PCA(res.PCA)
+```
+
+```{r}
+# 1. Scree plot: percentage of variance explained by each dimension
+fviz_eig(res.PCA, addlabels = TRUE, ylim = c(0, 50))
+```
+
+
+```{r}
+# 2. Correlation circle of the quantitative variables
+fviz_pca_var(
+  res.PCA, 
+  col.var = "contrib",         # color by contributions
+  gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+  repel = TRUE                 # avoid overlapping labels
+)
+```
+```{r}
+# 3. Individuals plot colored by quality of representation (cos2)
+fviz_pca_ind(
+  res.PCA, 
+  col.ind = "cos2", 
+  gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+  repel = TRUE
+)
+```
+```{r}
+# 4. Biplot combining individuals and variables
+fviz_pca_biplot(
+  res.PCA, 
+  repel = TRUE, 
+  col.var = "#2E9FDF", 
+  col.ind = "#696969"
+)
+```
+## Analysis of PCA Results
+
+### 1. Strongly correlated variables
+- The variables **100m, 400m, 110m.hurdle, and 1500m** (running events) are **positively correlated** with each other, as they all measure **speed and endurance**.  
+- The variables **Long.jump, High.jump, Pole.vault** (jumps) are also **correlated**, reflecting **jumping ability and explosiveness**.  
+- The variables **Shot.put, Discus, Javeline** (throws) form a correlated group, representing **strength and throwing technique**.
+
+### 2. Well-represented variables
+- Variables close to the **correlation circle** have a **high cos²**, meaning they are **well represented on the first two principal components**.  
+- Running and throwing events generally have high cos² values, while some events like **1500m** or **Pole.vault** may be slightly less well represented.
+
+### 3. Variables contributing most to the first two axes
+- **First axis (Dim 1)**: strongly influenced by **running events (100m, 400m, 110m.hurdle, 1500m)** and **throwing events (Shot.put, Discus, Javeline)**.  
+- **Second axis (Dim 2)**: mainly influenced by **jumping events (Long.jump, High.jump, Pole.vault)** and, to a lesser extent, **Javeline**.
+
+### 4. Interpretation of the axes
+- **Axis 1 (Dim 1)**: represents a **general performance axis**. Athletes with high values on this axis perform **well both in running and throwing events**.  
+- **Axis 2 (Dim 2)**: represents a **specialization axis**, separating athletes who are **strong in jumps and explosiveness** (positive values) from those **less proficient in these events** (negative values).
+
+### 5. Main groups of variables
+- **Group 1: Running events** → 100m, 400m, 110m.hurdle, 1500m → speed and endurance  
+- **Group 2: Jumping events** → Long.jump, High.jump, Pole.vault → explosiveness and jumping technique 
+- **Group 3: Throwing events** → Shot.put, Discus, Javeline → strength and throwing technique  
+
+These groups reflect the **different physical skills required** for the decathlon, and the PCA allows us to visualize how these skills combine to characterize the athletes.
+
+
+# TP03 : PCA Variables
+
+# 1. individuals plot 
+
+```{r}
+# Plot individuals on the first two dimensions
+fviz_pca_ind(
+  res.PCA, 
+  col.ind = "cos2",            # color by quality of representation
+  gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+  repel = TRUE,                # avoid overlapping labels
+  axes = c(1, 2),              # first two dimensions
+  title = "PCA of Decathlon Athletes (Individuals Plot)"
+)
+```
+
+#  2.Observation of Athlete Distribution (Individuals Plot)
+
+- The distribution of athletes in the PCA space (first two dimensions) is **not completely homogeneous**.  
+- The cloud of points shows a **structure**, indicating that athletes differ in their profiles across the 10 events.  
+- We can observe **distinct groups**:  
+  - Some athletes are **strong in running events**,  
+  - Others excel in **jumping or throwing events**,  
+  - Some are **well-rounded**, performing consistently across all events.  
+- There are also a few **outliers** who perform exceptionally well in certain events compared to the rest of the athletes.  
+
+Overall, the PCA highlights both **clusters of athletes with similar performance profiles** and **extreme performers** who stand out in specific skills.
+
+
+---
+
+## 3. Analysis of Extreme Individuals in the PCA Plot
+
+- **Most distant individuals from the origin**:
+
+  - **Casarsa**, **Sebrle**, **Drews**, **Bourguignon**, **Warners**, **Karpov** appear as the furthest points from the center.
+
+- **Meaning of their position**:
+
+  - Their position on the plane indicates that these athletes have **strongly distinctive performance profiles** compared to the average athlete.
+  - For example, **Casarsa** (top-left) may excel in some events but be weaker in others, creating a unique combination of results.
+  - **Sebrle** and **Karpov** (right side) likely perform **very well across multiple events**, pushing them far along the first dimension (Dim 1), which represents **overall performance**.
+
+- **Distance to the origin**:
+
+  - The farther an individual is from the origin, the **better their performance is represented by the first two principal components**.
+  - Large distance indicates that the **athlete’s profile strongly contributes to the structure captured by Dim 1 and Dim 2**, i.e., they are **extreme or specialized performers**.
+  - Athletes close to the origin have **average or balanced performances**, contributing less to the differentiation in the dataset.
+
+
