@@ -198,4 +198,24 @@ fviz_pca_ind(
 Overall, the PCA highlights both **clusters of athletes with similar performance profiles** and **extreme performers** who stand out in specific skills.
 
 
+---
+
+## 3. Analysis of Extreme Individuals in the PCA Plot
+
+- **Most distant individuals from the origin**:
+
+  - **Casarsa**, **Sebrle**, **Drews**, **Bourguignon**, **Warners**, **Karpov** appear as the furthest points from the center.
+
+- **Meaning of their position**:
+
+  - Their position on the plane indicates that these athletes have **strongly distinctive performance profiles** compared to the average athlete.
+  - For example, **Casarsa** (top-left) may excel in some events but be weaker in others, creating a unique combination of results.
+  - **Sebrle** and **Karpov** (right side) likely perform **very well across multiple events**, pushing them far along the first dimension (Dim 1), which represents **overall performance**.
+
+- **Distance to the origin**:
+
+  - The farther an individual is from the origin, the **better their performance is represented by the first two principal components**.
+  - Large distance indicates that the **athlete’s profile strongly contributes to the structure captured by Dim 1 and Dim 2**, i.e., they are **extreme or specialized performers**.
+  - Athletes close to the origin have **average or balanced performances**, contributing less to the differentiation in the dataset.
+
 
