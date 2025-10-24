@@ -1,0 +1,7 @@
+"0","# Removing the features using their names "
+"0","decathlon_vars <- decathlon[, !(names(decathlon) %in% c(""Rank"", ""Competition"", ""Points""))]"
+"0","# Or remove them using the last three features of the Dataframe of decathlon"
+"0","# decathlon_vars <- decathlon[, 1:10]"
+"0",""
+"0","# keep the other 3 variables as supplementary variables"
+"0","decathlon_supp = decathlon[,11:13]"

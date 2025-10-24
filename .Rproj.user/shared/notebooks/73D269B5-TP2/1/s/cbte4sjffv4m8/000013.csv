@@ -1,0 +1,3 @@
+"0","# Apply PCA"
+"0","res.PCA<-PCA(decathlon,quali.sup=c(13),quanti.sup=c(11,12),graph=FALSE)"
+"0","plot.PCA(res.PCA,choix='var')"

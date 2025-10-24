@@ -1,0 +1,7 @@
+"0","# 4. Biplot combining individuals and variables"
+"0","fviz_pca_biplot("
+"0","  res.pca, "
+"0","  repel = TRUE, "
+"0","  col.var = ""#2E9FDF"", "
+"0","  col.ind = ""#696969"""
+"0",")"
